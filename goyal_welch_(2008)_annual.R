@@ -33,12 +33,6 @@
     table1_2005_g_w <- fread(file.path("/Users/danielamy/Google Drive/[Ph.D.]/[Courses]/Year 1/Summer/[FIN 7806]/Goyal and Welch (2008)/Data/annual_2005_goyal_welch.csv"))
 
 #   ____________________________________________________________________________
-#   COERCE DATA TABLE                                                       ####
-#   ____________________________________________________________________________
-
-    annual  <- as.data.table(annual)
-
-#   ____________________________________________________________________________
 #   DEFINE VARIABLES                                                        ####
 #   ____________________________________________________________________________
 
@@ -272,13 +266,14 @@
   # 1. df is off by 20 (amount of rolling window)
   # 2. T is not calculated correctly - 135 for all variables
       
+      # OOS_aR2 <- 1 - (((1-OOS_R2)*((reg_OOS$df.residual-20)))/(reg_OOS$df.residual-21))
       OOS_aR2 <- 1 - (((1-OOS_R2)*((reg_OOS$df.residual)))/(reg_OOS$df.residual-1))
     
   ### . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ..
   ### Delta root mean squared error (dRMSE)                                   ####
   ### . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ..
   ### difference between the historical mean model RMSE and the OLS model RMSE
-
+ 
       dRMSE <- sqrt(MSE_N) - sqrt(MSE_A)
   
   #   ____________________________________________________________________________
@@ -812,7 +807,8 @@
 ##  Print table1 DT in viewer                                               ####
 ##  ............................................................................
     
-    DT <- datatable(table1_sum)
+    DT <- datatable(table1_sum, filter = 'top',list(paging = FALSE)) %>%
+      
     DT 
     
 ##  ............................................................................
